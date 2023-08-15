@@ -20,23 +20,27 @@ const onClick = (event) => {
     if (event.currentTarget === event.target) {
         return;
     }
-    const currentListItem = event.target.closest(".gallery__item");
-    const itemId = currentListItem.target.dataset.id;
-    const galleryItemsNew = galleryItems.find((item) => item.id === +itemId);
+    // const currentListItem = event.target.closest(".gallery__item");
+    // const itemId = currentListItem.target.dataset.id;
+    // const galleryItemsNew = galleryItems.find((item) => item.id === +itemId);
+    const currentListItem =
+        target.dataset.currentListItem ?? target.closest(".gallery__item").dataset.currentListItem;
+    const galleryItemsNew = galleryItems.find(({ id }) => id === +itemId);
+    console.log(galleryItemsNew);
 
-    
+
+
     const modalinstance = basicLightbox.create(`
 <div>
-<img class = "gallery__image" src="${galleryItemsNew}" alt="" >
+<img class = "gallery__image" src="${onClick}" alt="" >
 </div>
 `)
     console.log(modalinstance);
     modalinstance.show();
-
+gallery.addEventListener("click", onClick)
 };
 
 
 
 
 gallery.insertAdjacentHTML("afterbegin", markup.join(''));
-gallery.addEventListener("click", onClick)
