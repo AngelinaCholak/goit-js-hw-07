@@ -4,43 +4,61 @@ import { galleryItems } from './gallery-items.js';
 console.log(galleryItems);
 
 
-const gallery = document.querySelector('.gallery');
-const markup = galleryItems.map(({preview, original, description, id}) => 
+function createGalleryMarkup(galleryObj) {
+    return galleryObj
+        .map(
+        ({ preview, original, description }) => 
 `
-
-<li class = "gallery__item" data-galleryItems-id = "${id}">
-<img class = "gallery__image" src="${preview}" alt="" >
+<li class = "gallery__item">
+<a class = "gallery__link" href="${original}">
+<img
+    class = "gallery__image"
+    src="${preview}"
+    data-source = "${original}"
+    alt="${description}"
+/>
+</a>
 </li>
-
 `
-);
+    )
+    .join('');
+}
 
 
-const onClick = (event) => {
-    if (event.currentTarget === event.target) {
+const galleryRef = document.querySelector('.gallery'); 
+galleryRef.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
+galleryRef.addEventListener("click", onClick)
+
+let modalImage;
+
+function onClick(event) {
+    event.preventDefault();
+    if (!event.target.classList.contains("gallery__item")) {
         return;
     }
-    // const currentListItem = event.target.closest(".gallery__item");
-    // const itemId = currentListItem.target.dataset.id;
-    // const galleryItemsNew = galleryItems.find((item) => item.id === +itemId);
-    const currentListItem =
-        target.dataset.currentListItem ?? target.closest(".gallery__item").dataset.currentListItem;
-    const galleryItemsNew = galleryItems.find(({ id }) => id === +itemId);
-    console.log(galleryItemsNew);
+ 
+    const currentListItem = event.target.getAttribute("data-source");
+    openModal(currentListItem);
+
+}
+
+function openModal(currentListItem) {
+    modalImage = basicLightbox.create (
+        `<img src="${currentListItem} width="800" height = "600">`
+    );
+    modalImage.show();
+    window.addEventListener("keydown", clickOnEsc); 
+}
+
+function clickOnEsc(event) {
+    if (event.code === "Escape" && modalImage.visible()) {
+        modalImage.close();
+        window.removeEventListener("keydown", clickOnEsc);
+       }
+   }
+    
 
 
 
-    const modalinstance = basicLightbox.create(`
-<div>
-<img class = "gallery__image" src="${onClick}" alt="" >
-</div>
-`)
-    console.log(modalinstance);
-    modalinstance.show();
-gallery.addEventListener("click", onClick)
-};
 
 
-
-
-gallery.insertAdjacentHTML("afterbegin", markup.join(''));
