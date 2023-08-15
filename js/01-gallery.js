@@ -3,27 +3,40 @@ import { galleryItems } from './gallery-items.js';
 
 console.log(galleryItems);
 
-const instance = basicLightbox.create(`
-    <h1>Dynamic Content</h1>
-    <p>You can set the content of the lightbox with JS.</p>
-`)
-console.log(instance);
-instance.show();
 
 const gallery = document.querySelector('.gallery');
 const markup = galleryItems.map(({preview, original, description, id}) => 
 `
-<li  class = "gallery">
-<img src="${original}" alt="${galleryItems}" witht = "300">
-<h2>${description}</h2>
+
+<li class = "gallery__item" data-galleryItems-id = "${id}">
+<img class = "gallery__image" src="${preview}" alt="" >
 </li>
+
 `
 );
-gallery.insertAdjacentHTML('beforebegin', markup.join(''));
+
+
+const onClick = (event) => {
+    if (event.currentTarget === event.target) {
+        return;
+    }
+    const currentListItem = event.target.closest(".gallery__item");
+    const itemId = currentListItem.target.dataset.id;
+    const galleryItemsNew = galleryItems.find((item) => item.id === +itemId);
+
+    
+    const modalinstance = basicLightbox.create(`
+<div>
+<img class = "gallery__image" src="${galleryItemsNew}" alt="" >
+</div>
+`)
+    console.log(modalinstance);
+    modalinstance.show();
+
+};
 
 
 
 
-
-
-// data-galleryItems-id = "${id}"
+gallery.insertAdjacentHTML("afterbegin", markup.join(''));
+gallery.addEventListener("click", onClick)
