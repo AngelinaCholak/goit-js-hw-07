@@ -21,29 +21,9 @@ function createGalleryMarkup(galleryObj) {
 
 const galleryRef = document.querySelector(".gallery");
 galleryRef.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
-galleryRef.addEventListener("click", onClick);
-let modalImage;
 
-function onClick(evt) {
-  evt.preventDefault();
-  if (!evt.target.classList.contains("gallery__image")) {
-    return;
-  }
-  const urlOriginalImage = evt.target.getAttribute("data-source");
-  openModal(urlOriginalImage);
-}
 
-function openModal(urlOriginalImage) {
-  modalImage = basicLightbox.create(`
-// <img src="${urlOriginalImage}" width="800" height="600">
-// `);
-  modalImage.show();
-  window.addEventListener("keydown", clickOnEsc);
-}
-
-function clickOnEsc(evt) {
-  if (evt.code === "Escape" && modalImage.visible()) {
-    modalImage.close();
-    window.removeEventListener("keydown", clickOnEsc);
-  }
-}
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250
+});
