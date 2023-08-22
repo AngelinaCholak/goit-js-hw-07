@@ -21,6 +21,7 @@ function createGalleryMarkup(galleryObj) {
 }
 
 const galleryRef = document.querySelector(".gallery");
+
 galleryRef.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
 galleryRef.addEventListener("click", onClick);
 let modalImage;

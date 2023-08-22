@@ -12,6 +12,8 @@ function createGalleryMarkup(galleryObj) {
           class="gallery__image"
           src="${preview}"
           alt="${description}"
+          width = "700"
+          
         />
       </a>
     </li>`
